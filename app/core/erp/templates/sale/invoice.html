@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Factura</title>
+    <style>
+        * {
+            color: black;
+        }
+
+        body {
+            font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            color: black;
+        }
+
+        .name-company {
+            font-size: 30px;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        table thead tr th {
+            border: 1px solid black !important;
+            padding: 3px;
+        }
+
+        table tbody tr td {
+            border: 1px solid black;
+            padding: 3px;
+        }
+
+        .img-logo {
+            float: right; /* O puedes usar 'right' si prefieres que esté alineado a la derecha */
+            margin-top: 10px;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 100px;
+        }
+
+        .note-delivery {
+        float: right;
+        clear: both; /* Limpiar el float después de este elemento */
+        font-weight: bold; /* Aplica negrita al texto */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <img src="{% static 'img/sale.png' %}" class="img-fluid d-block mx-auto img-logo">
+        <h1 class="name-company">{{ company.name }}</h1>
+        <p class="text-center">
+            REPUBLICA BOLIVARIANA DE VENEZUELA<br>
+            MINISTERIO DEL PODER POPULAR PARA LA DEFENSA<br>
+            EJÉRCITO BOLIVARIANO<br>
+            COMANDO LOGISTICO<br>
+            SERVICIO DE ALIMENTACION DEL EJÉRCITO<br>
+        </p>
+        <p>
+            <b>Cliente:</b> {{ sale.cli.get_full_name }}<br>
+            <b>Domicilio Fiscal:</b> {{ sale.cli.address }}<br>
+            <b>Teléfonos:</b> {{ sale.cli.phone }}<br>
+            <b>Fecha de Venta:</b> {{ sale.date_joined|date:'c' }}<br>
+        </p>
+        <h5 class="note-delivery">NOTA DE ENTREGA: {{ factura_numero }}</h5>
+
+        <table class="table" style="width: 100%;">
+            <thead>
+                <tr style="border: 1px solid black;">
+                    <th style="width: 8%;">N°</th>
+                    <th style="width: 10%;">Código</th>
+                    <th style="width: 20%;">Producto</th>
+                    <th style="width: 20%;">Cantidad</th>
+                    <th style="width: 20%;">P.Unitario</th>
+                    <th style="width: 20%;" class="text-right">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for det in sale.detsale_set.all %}
+                <tr>
+                    <td>{{ det.prod.id }}</td>
+                    <td>{{ det.prod.cod }}</td>
+                    <td>{{ det.prod.name }}</td>
+                    <td class="text-center">{{ det.cant }} {{ det.pres }}</td>
+                    <td class="text-center">{{ det.price|floatformat:2 }}</td>
+                    <td class="text-right">{{ det.subtotal|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="5" class="text-right"><b>Subtotal</b></td>
+                    <td class="text-right">{{ sale.subtotal|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right"><b>Iva %</b></td>
+                    <td class="text-right">{{ sale.iva|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right"><b>Total a pagar</b></td>
+                    <td class="text-right">{{ sale.total|floatformat:2 }} Bs</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <p class="text-uppercase font-weight-bold text-center">
+                            Total de productos {{ sale.detsale_set.all.count }}<br>
+                        </p>
+                        <p class="text-uppercase font-weight-bold">
+                            {{ sale.descri }}<br>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <tr style="border: 1px solid black; overflow: hidden;">
+                <th style="width: 100%; padding: 5px; line-height: 1.5;">Emitido por: {{ username }}</th>
+            </tr>
+        </table>
+
+        <p>DEVOLVER FIRMADO Y SELLADO</p>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+
+        <table style="width: 100%;">
+            <thead>
+                <tr class="text-center">
+                    <td>
+                        <p>________________________</p>
+                        <p>                                  <br> 
+                            OFICIAL ENCARGADO <br> 
+                            DESPACHO DE </p>
+                    </td>
+                    <td>
+                        <p>_______________________</p>
+                        <p>RECIBIDO POR:<br> <br> <br></p>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+
+        <br>
+        <br>
+        <br>
+
+        <table style="width: 100%;">
+            <thead>
+                <tr class="text-center">
+                    <!---<td>
+                        <p>______________________________</p>
+                        <p>JEFE DE ALMACENAMIENTO <br> 
+                            Y DESPACHO <br> </p>
+                    </td> -->
+                    <td>
+                        <p>_____________________________________</p>
+                        <p>MY. YASMIN DESIRE GONZALEZ MONTILLA <br> JEFE DIV DE ABASTECIMIENTO CLASE I <br> </p>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</body>
+
+</html>
