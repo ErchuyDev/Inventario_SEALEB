@@ -2,5 +2,6 @@
     "editor.guides.bracketPairs": true,
     "editor.cursorBlinking": "expand",
     "editor.cursorSmoothCaretAnimation": "on",
-    "editor.linkedEditing": true
+    "editor.linkedEditing": true,
+    "terminal.integrated.fontFamily": "MesloLGS NF"
 }

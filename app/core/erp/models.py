@@ -33,7 +33,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='product/%Y/%m/%d', null=True, blank=True, verbose_name='Imagen')
     stock = models.IntegerField(default=0, verbose_name='Stock')
     pres = models.CharField(max_length=20, verbose_name='Presentación')
-    pvp = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Precio de venta')
+    pvp = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Precio')
 
     def __str__(self):
         return self.name
